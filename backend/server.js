@@ -1,11 +1,16 @@
-  const express = require('express');
+const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-app.use(express.json());
+// Enable CORS middleware
 app.use(cors());
+
+// Explicitly handle preflight OPTIONS requests for all routes
+app.options('*', cors());
+
+app.use(express.json());
 
 // Mount authentication routes under /api
 app.use('/api', authRoutes);
