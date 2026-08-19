@@ -24,7 +24,7 @@ export default function Signup({ onSwitch }) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password }), // or whatever fields your API expects
+          body: JSON.stringify({ username, email, password }),
         },
       );
       const data = await res.json();
