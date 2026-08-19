@@ -8,11 +8,15 @@ export default function Login({ onSwitch }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://instagram-backend-olive.vercel.app/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ loginKey, password }),
-      });
+      // AFTER (Make sure the path matches your Express endpoint)
+      const res = await fetch(
+        "https://instagram-backend-olive.vercel.app/api/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ loginKey, password }),
+        },
+      );
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem("token", data.token);

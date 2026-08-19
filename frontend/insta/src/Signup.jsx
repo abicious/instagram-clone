@@ -19,11 +19,14 @@ export default function Signup({ onSwitch }) {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://instagram-backend-olive.vercel.app/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        "https://instagram-backend-olive.vercel.app/api/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }), // or whatever fields your API expects
+        },
+      );
       const data = await res.json();
       if (res.ok) {
         setMessage("Account created successfully! Switching to login...");
