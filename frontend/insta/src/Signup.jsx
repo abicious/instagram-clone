@@ -24,7 +24,11 @@ export default function Signup({ onSwitch }) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password }),
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.contact,
+            password: formData.password,
+          }),
         },
       );
       const data = await res.json();
@@ -32,7 +36,7 @@ export default function Signup({ onSwitch }) {
         setMessage("Account created successfully! Switching to login...");
         setTimeout(() => onSwitch(), 1500);
       } else {
-        setMessage(data.message);
+        setMessage(data.message || "Registration failed");
       }
     } catch (err) {
       setMessage("Failed to connect to server");
@@ -64,6 +68,7 @@ export default function Signup({ onSwitch }) {
               type="text"
               name="contact"
               placeholder="Mobile number or email"
+              value={formData.contact}
               onChange={handleChange}
               className="w-full bg-[#262626] border border-[#363636] rounded-md px-3 py-2 text-sm text-white focus:outline-none"
             />
@@ -77,6 +82,7 @@ export default function Signup({ onSwitch }) {
               type="password"
               name="password"
               placeholder="Password"
+              value={formData.password}
               onChange={handleChange}
               className="w-full bg-[#262626] border border-[#363636] rounded-md px-3 py-2 text-sm text-white focus:outline-none"
             />
@@ -89,6 +95,7 @@ export default function Signup({ onSwitch }) {
             <div className="grid grid-cols-3 gap-2">
               <select
                 name="month"
+                value={formData.month}
                 onChange={handleChange}
                 className="bg-[#262626] border border-[#363636] rounded-md px-2 py-2 text-xs text-white"
               >
@@ -99,6 +106,7 @@ export default function Signup({ onSwitch }) {
               </select>
               <select
                 name="day"
+                value={formData.day}
                 onChange={handleChange}
                 className="bg-[#262626] border border-[#363636] rounded-md px-2 py-2 text-xs text-white"
               >
@@ -108,6 +116,7 @@ export default function Signup({ onSwitch }) {
               </select>
               <select
                 name="year"
+                value={formData.year}
                 onChange={handleChange}
                 className="bg-[#262626] border border-[#363636] rounded-md px-2 py-2 text-xs text-white"
               >
@@ -126,6 +135,7 @@ export default function Signup({ onSwitch }) {
               type="text"
               name="fullName"
               placeholder="Full name"
+              value={formData.fullName}
               onChange={handleChange}
               className="w-full bg-[#262626] border border-[#363636] rounded-md px-3 py-2 text-sm text-white focus:outline-none"
             />
@@ -139,6 +149,7 @@ export default function Signup({ onSwitch }) {
               type="text"
               name="username"
               placeholder="Username"
+              value={formData.username}
               onChange={handleChange}
               className="w-full bg-[#262626] border border-[#363636] rounded-md px-3 py-2 text-sm text-white focus:outline-none"
             />
