@@ -1,48 +1,32 @@
 const express = require('express');
 const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-app.use(cors());
-app.options('*', cors());
+// Enable CORS for frontend origin
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
+// Explicitly capture preflight OPTIONS checks and return 200 OK
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json());
 
-// In-memory array for testing
-const users = [];
+// Mount authentication routes
+app.use('/api', authRoutes);
 
-// Root test route to verify server is alive
+// Root route check
 app.get('/', (req, res) => {
-  res.send("Backend server is running smoothly!");
-});
-
-// REGISTER ROUTE
-app.post('/api/register', (req, res) => {
-  const { username, email, password } = req.body;
-  
-  if (!username || !password) {
-    return res.status(400).json({ message: "Username and password required" });
-  }
-
-  users.push({ username, email, password });
-  return res.status(201).json({ message: "Registered successfully!", user: { username } });
-});
-
-// LOGIN ROUTE
-app.post('/api/login', (req, res) => {
-  const { loginKey, password } = req.body;
-
-  const user = users.find(
-    u => (u.username === loginKey || u.email === loginKey) && u.password === password
-  );
-
-  if (!user) {
-    return res.status(400).json({ message: "Invalid credentials" });
-  }
-
-  return res.status(200).json({
-    token: "mock-jwt-token-12345",
-    user: { username: user.username }
-  });
+  res.send('Backend server is running');
 });
 
 if (process.env.NODE_ENV !== 'production') {
