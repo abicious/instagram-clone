@@ -3,11 +3,23 @@ const cors = require('cors');
 
 const app = express();
 
-// Enable CORS for all incoming requests
-app.use(cors());
+// Enable CORS
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
+// Explicitly handle OPTIONS preflight
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json());
 
-// Temporary in-memory user list
 const users = [];
 
 app.get('/', (req, res) => {
